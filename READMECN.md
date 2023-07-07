@@ -4,6 +4,15 @@
 
 科研工作与生活各自独立一张图。处理的时间段不同。
 
+Urgency
+   Full, 一个季度以上的安排规划（WIP，难以避免。但是半天为一单位最好）
+   Median， plan in 4 weeks
+   Sooner， plan in one week
+   Shit-Emergency，finish in one day
+Impact
+   大于6分到都是深度影响人生的决策，比如职业道路。定居城市等决策
+   Any decision with a score greater than 6 has a profound impact on one's life, such as career path.
+
 1. 横坐标是时间DDL表示紧急程度Urgency，纵坐标是重要性Impact(代表能增强自身和造轮子，还是繁琐小事)
    1. 横坐标会随时间自动移动，
    2. 标记出四块或者9块颜色
