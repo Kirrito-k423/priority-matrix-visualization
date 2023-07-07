@@ -52,10 +52,10 @@ def pmGraph():
     fig.update_traces(textfont_color="red")
     
     # Get x-axis range
-    x_min, x_max = 0.7, xMax
+    x_min, x_max = min(fig.data[0].x.min()*0.7,0.7), max(xMax,fig.data[0].x.max()*2.5)
 
     # Get y-axis range
-    y_min, y_max = 3, 12
+    y_min, y_max = min(fig.data[0].y.min()*0.7,3), max(12,fig.data[0].y.max()*1.2)
 
     # Add vertical line x=7
     fig.add_shape(
