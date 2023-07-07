@@ -37,16 +37,50 @@ def pmGraph():
     
     df['DDL'] = (pd.to_datetime(df['Urgency'], format='%Y-%m-%d').dt.date-today).apply(lambda x: int(re.findall(r'\d+', str(x))[0]))
     
+    xMax = 120
     fig = px.scatter(
         df,  # 选择绘图数据
         x="DDL",  # x轴
         y="Impact",  # y轴
         size="Workload",  # 点的大小
-        # color="continent",  # 颜色
+        color="Preference",  # 颜色
         hover_name="Name",  # 悬停信息
+        text="Short",
         log_x=True,   # 对数变换
-        size_max=120  # 点的最大值
+        size_max=xMax  # 点的最大值
     )
+    fig.update_traces(textfont_color="red")
+    
+    # Get x-axis range
+    x_min, x_max = 0.7, xMax
+
+    # Get y-axis range
+    y_min, y_max = 3, 12
+
+    # Add vertical line x=7
+    fig.add_shape(
+        type="line",
+        x0=7, x1=7,
+        y0=y_min, y1=y_max,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
+    # Add vertical line x=30
+    fig.add_shape(
+        type="line",
+        x0=30, x1=30,
+        y0=y_min, y1=y_max,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
+    # Add horizontal line y=6
+    fig.add_shape(
+        type="line",
+        x0=x_min, x1=x_max,
+        y0=6, y1=6,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
     # fig.show()
     return fig
     
