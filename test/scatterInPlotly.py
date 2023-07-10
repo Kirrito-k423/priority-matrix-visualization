@@ -11,6 +11,11 @@ import plotly.graph_objects as go
 
 treasure = [] 
 
+def update_data(n):
+    # 在这里更新数据
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return html.H2(f"Data updated at: {current_time}")
+
 def scatterGraph():
     df = px.data.gapminder()
     fig = px.scatter(
@@ -35,11 +40,13 @@ def pmGraph():
     df = pd.read_csv('treasure.csv')
     today = date.today()
     
-    df['DDL'] = (pd.to_datetime(df['Urgency'], format='%Y-%m-%d').dt.date-today).apply(lambda x: int(re.findall(r'\d+', str(x))[0]))
-    
+    df['DDL'] = (pd.to_datetime(df['Urgency'], format='%Y-%m-%d').dt.date-today).apply(lambda x: int(re.findall(r'-?\d+', str(x))[0]))
+    # print(df.head)
     xMax = 120
+    filtered_df = df[df['DDL'] > 0]
+    # print(filtered_df.head())
     fig = px.scatter(
-        df,  # 选择绘图数据
+        filtered_df,  # 选择绘图数据
         x="DDL",  # x轴
         y="Impact",  # y轴
         size="Workload",  # 点的大小
@@ -47,9 +54,16 @@ def pmGraph():
         hover_name="Name",  # 悬停信息
         text="Short",
         log_x=True,   # 对数变换
-        size_max=xMax  # 点的最大值
+        size_max=xMax,  # 点的最大值
+        color_continuous_scale="Pinkyl" 
     )
-    fig.update_traces(textfont_color="red")
+    fig.update_traces(
+            texttemplate="<b>%{text}</b>",
+            textfont=dict(
+                family="Arial, sans-serif"
+            )
+    )
+    fig.update_traces(textfont_color="purple")
     
     # Get x-axis range
     x_min, x_max = min(fig.data[0].x.min()*0.7,0.7), max(xMax,fig.data[0].x.max()*2.5)
@@ -95,11 +109,18 @@ if __name__ == "__main__":
 
     # dash to show
     app = Dash(__name__)
+    
+    
     app.layout = html.Div(children=[
         dcc.Graph(
             id='scatter',
             figure=fig0,
             style = {'height': '100vh'}
+        ),
+        dcc.Interval(
+            id='interval-component',
+            interval=3*1000, # in milliseconds
+            n_intervals=0
         )
     ])
     
