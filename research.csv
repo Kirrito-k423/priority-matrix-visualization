@@ -1,0 +1,4 @@
+Name,Short,Urgency,Workload,Impact,Preference,Significance,Achievement/gains
+ContextSwitchComponents,ContextSwitchCost,,5,8,7,,
+,PaperWriting,,30,6,5,,
+,Numerical analysis of metrics,,10,5,6,,

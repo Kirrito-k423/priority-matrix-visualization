@@ -98,12 +98,72 @@ def pmGraph():
     # fig.show()
     return fig
     
+def researchGraph():
+    df = pd.read_csv('research.csv')
+   
+    # print(df.head)
     
+    # print(filtered_df.head())
+    fig = px.scatter(
+        df,  # 选择绘图数据
+        x="Workload",  # x轴
+        y="Impact",  # y轴
+        size="Preference",  # 点的大小
+        # color="Preference",  # 颜色
+        hover_name="Name",  # 悬停信息
+        text="Short",
+        # log_x=True,   # 对数变换
+        # size_max=xMax,  # 点的最大值
+        color_continuous_scale="Pinkyl" 
+    )
+    fig.update_traces(
+            texttemplate="<b>%{text}</b>",
+            textfont=dict(
+                family="Arial, sans-serif"
+            )
+    )
+    fig.update_traces(textfont_color="purple")
+    
+    # Get x-axis range
+    xMax = 30
+    x_min, x_max = min(fig.data[0].x.min()*0.7,0.7), max(xMax,fig.data[0].x.max()*1.2)
+
+    # Get y-axis range
+    y_min, y_max = min(fig.data[0].y.min()*0.7,3), max(12,fig.data[0].y.max()*1.2)
+
+    # Add vertical line x=5
+    fig.add_shape(
+        type="line",
+        x0=7, x1=7,
+        y0=y_min, y1=y_max,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
+    # Add vertical line x=25
+    fig.add_shape(
+        type="line",
+        x0=30, x1=30,
+        y0=y_min, y1=y_max,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
+    # Add horizontal line y=6
+    fig.add_shape(
+        type="line",
+        x0=x_min, x1=x_max,
+        y0=6, y1=6,
+        line=dict(color="black", width=1, dash="dash")
+    )
+
+    # fig.show()
+    return fig
+      
 
 if __name__ == "__main__": 
     
     # fig0 = scatterGraph()
     fig0 = pmGraph()
+    fig1 = researchGraph()
     
     
 
@@ -116,6 +176,11 @@ if __name__ == "__main__":
             id='scatter',
             figure=fig0,
             style = {'height': '100vh'}
+        ),
+        dcc.Graph(
+            id='line',
+            figure=fig1,
+            style={'height': '100vh'}
         ),
         dcc.Interval(
             id='interval-component',
